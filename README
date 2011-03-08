@@ -1,0 +1,40 @@
+use like this:
+
+<code>
+$('#something-theres-alot-of').infinitescroll({
+  next: '#next'
+});
+</code>
+
+Example rails server side controller code:
+<code>
+@items_per_page = 25
+offset = params[:offset] || 0
+@collection = Collection.where(:limit => @items_per_page + 1, :offset => offset)
+
+if @collection.length == @items_per_page + 1
+  @collection.pop
+  @has_more = true
+  @next_url = collection_url(:offset => offset + @items_per_page)
+else
+  @has_more = false
+  @next_url = nil
+end
+
+respond_to do |format|
+  format.html  # this will have the container div and render the partial below into 
+  format.json  { 
+    render :json => {
+      :worked => true,
+      :html  => render_to_string(:partial => 'some_collection.html.haml', :collection => @collection}),
+      :has_more => @has_more,
+      :next_url => @next_url
+    }
+  }
+end
+</code>
+
+based off of stuff from 
+https://github.com/brianmario/jquery-infinite-scroll
+and
+https://github.com/paulirish/infinite-scroll
