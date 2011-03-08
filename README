@@ -10,7 +10,7 @@ things_controller.rb
 def index
   @items_per_page = 25
   @offset = params[:offset] || 0
-  @collection = Thing.where(:limit => @items_per_page + 1, :offset => @offset)
+  @things = Thing.where(:limit => @items_per_page + 1, :offset => @offset)
 
   if @things.length == @items_per_page + 1
     @things.pop
