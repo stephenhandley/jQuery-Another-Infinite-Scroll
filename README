@@ -56,4 +56,6 @@ and
 https://github.com/paulirish/infinite-scroll
 
 
-TODO: convert this to markdown
+TODO: 
+- start hiding next link and add loading indicator
+- convert this to markdown
