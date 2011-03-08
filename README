@@ -1,37 +1,59 @@
 use like this:
 
-$('#something-theres-alot-of').infinitescroll({
-  next: '#next'
-});
+$('#things').infinitescroll({next: '#next'});
 
-Example rails server side controller code:
 
-@items_per_page = 25
-offset = params[:offset] || 0
-@collection = Collection.where(:limit => @items_per_page + 1, :offset => offset)
+Using it with Rails:
 
-if @collection.length == @items_per_page + 1
-  @collection.pop
-  @has_more = true
-  @next_url = collection_url(:offset => offset + @items_per_page)
-else
-  @has_more = false
-  @next_url = nil
-end
+things_controller.rb
+======================
+def index
+  @items_per_page = 25
+  @offset = params[:offset] || 0
+  @collection = Thing.where(:limit => @items_per_page + 1, :offset => @offset)
 
-respond_to do |format|
-  format.html  # this will have the container div and render the partial below into 
-  format.json  { 
-    render :json => {
-      :worked => true,
-      :html  => render_to_string(:partial => 'some_collection.html.haml', :collection => @collection}),
-      :has_more => @has_more,
-      :next_url => @next_url
+  if @things.length == @items_per_page + 1
+    @things.pop
+    @has_more = true
+    @next_url = things_url(:offset => @offset + @items_per_page)
+  else
+    @has_more = false
+    @next_url = nil
+  end
+
+  respond_to do |format|
+    format.html  # this will have the container div and render the partial below into 
+    format.json  { 
+      render :json => {
+        :worked => true,
+        :html  => render_to_string(:partial => 'things.html.haml', :collection => @things}),
+        :has_more => @has_more,
+        :next_url => @next_url
+      }
     }
-  }
+  end
 end
 
-based off of stuff from 
+index.html.haml
+=======================
+- if @things.length > 0
+  #things
+    = render(:partial => 'things', :collection => @things})
+
+  = link_to('next', @next_url, :id => 'next')
+-else 
+  no photos
+
+_things.html.haml
+========================
+- things.each do |thing|
+  = thing.inspect
+
+
+based off of pieces from 
 https://github.com/brianmario/jquery-infinite-scroll
 and
 https://github.com/paulirish/infinite-scroll
+
+
+TODO: convert this to markdown

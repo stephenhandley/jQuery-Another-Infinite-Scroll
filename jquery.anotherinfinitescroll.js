@@ -3,7 +3,7 @@
     return $(this).each(function() {
       var el = $(this);
       var settings = $.extend({
-          triggerAt: 1000,
+          triggerAt: 400,
           container: $(document),
           callback: null
         }, options);
