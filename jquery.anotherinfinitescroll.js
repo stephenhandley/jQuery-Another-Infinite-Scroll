@@ -29,7 +29,8 @@
           return;
         }
 
-        var distanceToBottom = $(document).height() - (settings.container.scrollTop() || $(settings.container.get().ownerDocument.body).scrollTop()) - $(window).height();        
+        var containerScrollTop = settings.container.scrollTop() || $(settings.container.get().ownerDocument.body).scrollTop();
+        var distanceToBottom = $(document).height() - (containerScrollTop + $(window).height());
         
         if (distanceToBottom < settings.lookahead) {  
           req = $.get(nextLink.attr('href'), {}, settings.callback, 'json');
